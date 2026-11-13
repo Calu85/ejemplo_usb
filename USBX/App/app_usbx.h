@@ -42,7 +42,7 @@ extern "C" {
 
 /* Exported constants --------------------------------------------------------*/
 #define USBX_APP_MEM_POOL_SIZE       8192
-#define USBX_MEMORY_STACK_SIZE       1024
+#define USBX_MEMORY_STACK_SIZE       8192
 /* USER CODE BEGIN EC */
 
 /* USER CODE END EC */

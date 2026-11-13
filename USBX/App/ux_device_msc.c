@@ -23,7 +23,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <string.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -106,10 +106,10 @@ UINT USBD_STORAGE_Read(VOID *storage_instance, ULONG lun, UCHAR *data_pointer,
   /* USER CODE BEGIN USBD_STORAGE_Read */
   UX_PARAMETER_NOT_USED(storage_instance);
   UX_PARAMETER_NOT_USED(lun);
-  UX_PARAMETER_NOT_USED(data_pointer);
-  UX_PARAMETER_NOT_USED(number_blocks);
   UX_PARAMETER_NOT_USED(lba);
-  UX_PARAMETER_NOT_USED(media_status);
+  memset(data_pointer, 0, number_blocks * 512);   /* devuelve ceros, "disco" vacío */
+  *media_status = UX_SUCCESS;
+      printf("[MSC] Read lba=%lu nb=%lu\r\n", (unsigned long)lba, (unsigned long)number_blocks);
   /* USER CODE END USBD_STORAGE_Read */
 
   return status;
@@ -138,7 +138,7 @@ UINT USBD_STORAGE_Write(VOID *storage_instance, ULONG lun, UCHAR *data_pointer,
   UX_PARAMETER_NOT_USED(data_pointer);
   UX_PARAMETER_NOT_USED(number_blocks);
   UX_PARAMETER_NOT_USED(lba);
-  UX_PARAMETER_NOT_USED(media_status);
+  *media_status = UX_SUCCESS;   /* read-only, ignora escrituras */
   /* USER CODE END USBD_STORAGE_Write */
 
   return status;
@@ -190,7 +190,8 @@ UINT USBD_STORAGE_Status(VOID *storage_instance, ULONG lun, ULONG media_id,
   UX_PARAMETER_NOT_USED(storage_instance);
   UX_PARAMETER_NOT_USED(lun);
   UX_PARAMETER_NOT_USED(media_id);
-  UX_PARAMETER_NOT_USED(media_status);
+  *media_status = UX_SUCCESS;   /* medio presente y listo */
+  printf("[MSC] Status\r\n");
   /* USER CODE END USBD_STORAGE_Status */
 
   return status;
@@ -236,7 +237,8 @@ ULONG USBD_STORAGE_GetMediaLastLba(VOID)
   ULONG LastLba = 0U;
 
   /* USER CODE BEGIN USBD_STORAGE_GetMediaLastLba */
-
+LastLba = 1023U;
+    printf("[MSC] GetLastLba\r\n");
   /* USER CODE END USBD_STORAGE_GetMediaLastLba */
 
   return LastLba;
@@ -253,7 +255,8 @@ ULONG USBD_STORAGE_GetMediaBlocklength(VOID)
   ULONG MediaBlockLen = 0U;
 
   /* USER CODE BEGIN USBD_STORAGE_GetMediaBlocklength */
-
+  MediaBlockLen = 512U;
+      printf("[MSC] GetBlockLen\r\n");
   /* USER CODE END USBD_STORAGE_GetMediaBlocklength */
 
   return MediaBlockLen;

@@ -93,22 +93,6 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-
-  /* USER CODE END SysInit */
-
-  /* Initialize all configured peripherals */
-  MX_GPIO_Init();
-  MX_ICACHE_Init();
-  MX_USB_PCD_Init();
-  MX_USBX_Init();
-  /* USER CODE BEGIN 2 */
-  tiempo = HAL_GetTick();
-  /* USER CODE END 2 */
-
-  /* Initialize leds */
-  BSP_LED_Init(LED_GREEN);
-
-  /* Initialize COM1 port (115200, 8 bits (7-bit data + 1 stop bit), no parity */
   BspCOMInit.BaudRate   = 115200;
   BspCOMInit.WordLength = COM_WORDLENGTH_8B;
   BspCOMInit.StopBits   = COM_STOPBITS_1;
@@ -118,9 +102,35 @@ int main(void)
   {
     Error_Handler();
   }
+  /* USER CODE END SysInit */
+
+  /* Initialize all configured peripherals */
+  MX_GPIO_Init();
+  MX_ICACHE_Init();
+  MX_USB_PCD_Init();
+  /* NOTA CALU: esto lo estoy agregando a partir de lo que sale de este posteo en el foro st:
+  https://community.st.com/stm32-mcus-embedded-software-32/usbx-on-stm32h5-cdc-can-t-open-port-160902 */
+HAL_PCDEx_PMAConfig(&hpcd_USB_DRD_FS, 0x00, PCD_SNG_BUF, 0x08);
+HAL_PCDEx_PMAConfig(&hpcd_USB_DRD_FS, 0x80, PCD_SNG_BUF, 0x58);
+HAL_PCDEx_PMAConfig(&hpcd_USB_DRD_FS, 0x81, PCD_SNG_BUF, 0xC0);
+HAL_PCDEx_PMAConfig(&hpcd_USB_DRD_FS, 0x02, PCD_SNG_BUF, 0x100);
+printf("[MAIN] antes de MX_USBX_Init\r\n");
+UINT r = MX_USBX_Init();
+printf("[MAIN] MX_USBX_Init ret = 0x%08lX\r\n", (unsigned long)r);
+  // MX_USBX_Init();
+  /* USER CODE BEGIN 2 */
+  HAL_PCD_Start(&hpcd_USB_DRD_FS); //Agregado por calu
+  /* USER CODE END 2 */
+
+  /* Initialize leds */
+  BSP_LED_Init(LED_GREEN);
+
+  /* Initialize COM1 port (115200, 8 bits (7-bit data + 1 stop bit), no parity */
+
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  tiempo = HAL_GetTick();
   while (1)
   {
 	  ux_device_stack_tasks_run();

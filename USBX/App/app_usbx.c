@@ -40,7 +40,7 @@ UINT MX_USBX_Init(VOID)
   UCHAR *pointer;
 
   /* USER CODE BEGIN MX_USBX_Init0 */
-
+printf("[USBX] Entrando a MX_USBX_Init\r\n");
   /* USER CODE END MX_USBX_Init0 */
 
   pointer = ux_byte_pool_buffer;
@@ -61,7 +61,7 @@ UINT MX_USBX_Init(VOID)
   }
 
   /* USER CODE BEGIN MX_USBX_Init1 */
-
+printf("[USBX] Saliendo de MX_USBX_Init OK\r\n");
   /* USER CODE END MX_USBX_Init1 */
 
   return ret;
@@ -108,7 +108,7 @@ ULONG _ux_utility_time_get(VOID)
   ULONG time_tick = 0U;
 
   /* USER CODE BEGIN _ux_utility_time_get */
-
+  time_tick = HAL_GetTick(); //Agregado por Calu
   /* USER CODE END _ux_utility_time_get */
 
   return time_tick;

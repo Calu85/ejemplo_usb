@@ -66,6 +66,7 @@ UINT MX_USBX_Device_Init(VOID)
 {
   UINT ret = UX_SUCCESS;
   /* USER CODE BEGIN MX_USBX_Device_Init 0 */
+  printf("[USBX] Entrando a MX_USBX_Device_Init\r\n");
   /* USER CODE END MX_USBX_Device_Init 0 */
 
   /* Initialize the Stack USB Device*/
@@ -106,7 +107,7 @@ UINT MX_USBX_Device_Stack_Init(void)
   UCHAR *language_id_framework;
 
   /* USER CODE BEGIN MX_USBX_Device_Stack_Init 0 */
-
+    printf("[MSC] Entrando a MX_USBX_Device_Stack_Init\r\n");
   /* USER CODE END MX_USBX_Device_Stack_Init 0 */
   /* Get Device Framework High Speed and get the length */
   device_framework_high_speed = USBD_Get_Device_Framework_Speed(USBD_HIGH_SPEED,
@@ -199,6 +200,7 @@ UINT MX_USBX_Device_Stack_Init(void)
   }
 
   /* USER CODE BEGIN MX_USBX_Device_Stack_Init_PostTreatment */
+  ux_dcd_stm32_initialize((ULONG)USB_DRD_FS, (ULONG)&hpcd_USB_DRD_FS); //Agregado por calu
   /* USER CODE END MX_USBX_Device_Stack_Init_PostTreatment */
 
   /* USER CODE BEGIN MX_USBX_Device_Stack_Init 1 */
